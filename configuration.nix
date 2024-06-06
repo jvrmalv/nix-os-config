@@ -18,7 +18,7 @@ in
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nix-os_vm"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -196,6 +196,7 @@ in
   services.xserver.xkbOptions = caps:escape_shifted_capslock;
   console.useXkbConfig = true;
 
+s
   # Set wheel as not needing sudo password
   security.sudo.wheelNeedsPassword = false;
 
