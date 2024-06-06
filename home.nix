@@ -8,7 +8,12 @@ in
   home.packages = [ pkgs.xfce.thunar];
   home.sessionVariables.EDITOR = "nvim";
 
-  programs.bash.enable = true;
+  programs.bash = {
+    enable = true;
+    bashrcExtra = '' 
+    eval "$(direnv hook bash)"
+    ''; 
+  };
 
   programs.git = {
     enable = true;
@@ -17,10 +22,27 @@ in
   };
 
   programs.neovim = {
+    plugins = [
+    pkgs.vimPlugins.nvim-treesitter
+    pkgs.vimPlugins.nvim-treesitter-parsers.nix
+    pkgs.vimPlugins.nvim-treesitter-parsers.bash
+    pkgs.vimPlugins.nvim-treesitter-parsers.json
+    pkgs.vimPlugins.nvim-treesitter-parsers.vim
+    pkgs.vimPlugins.nvim-treesitter-parsers.lua
+    ];
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    extraConfig = ''
+      filetype plugin indent on
+      set autoindent
+      set tabstop=2
+      set softtabstop=2
+      set shiftwidth=2
+      set expandtab
+      set number
+    '';
   };
 
   programs.alacritty = {
@@ -33,6 +55,7 @@ in
       modifier = mod;
 
       fonts = [ "DejaVu Sans Mono, FontAwesome 6" ];
+      defaultWorkspace = "workspace number 1";
 
       keybindings = lib.mkOptionDefault {
         "${mod}+Return" = "exec ${pkgs.alacritty}/bin/alacritty";
@@ -51,6 +74,9 @@ in
         "${mod}+Shift+k" = "move up";
         "${mod}+Shift+l" = "move right";
 
+	# Split Conatainer
+	"${mod}+Shift+g" = "split horizontal";
+	"${mod}+Shift+v" = "split vertical";
 
         # My multi monitor setup
         # "${mod}+m" = "move workspace to output {MONITOR NAME}";
@@ -58,6 +84,8 @@ in
       };
     };
   };
-  home.stateVersion = "23.05";
+
+  programs.direnv = {
+    enable = true; enableBashIntegration = true; nix-direnv.enable = true; }; home.stateVersion = "23.05";
 }
 

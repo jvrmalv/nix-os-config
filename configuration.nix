@@ -18,7 +18,7 @@ in
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "nix-os_vm"; # Define your hostname.
+  networking.hostName = "nix-osvm"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -57,7 +57,7 @@ in
   services.xserver.windowManager.i3 = {
     enable = true;
     extraSessionCommands = ''
-      xrandr --output Virtual1 --mode 1920x1080
+      xrandr --output Virtual-1 --mode 1920x1080
     '';
   };
   services.xserver.displayManager.defaultSession = "none+i3";
@@ -185,8 +185,8 @@ in
 
   # Set aliases for bash shell
   programs.bash.shellAliases = {
-    config = "sudo vim /etc/nixos/configuration.nix";
-    home = "vim /home/shidou/flake/home.nix";
+    config = "sudo nvim /etc/nixos/configuration.nix";
+    home = "nvim /home/shidou/flake/home.nix";
     nb = "sudo nixos-rebuild build";
     nt = "sudo nixos-rebuild test";
     ns = "sudo nixos-rebuild switch";
@@ -196,7 +196,6 @@ in
   services.xserver.xkbOptions = caps:escape_shifted_capslock;
   console.useXkbConfig = true;
 
-s
   # Set wheel as not needing sudo password
   security.sudo.wheelNeedsPassword = false;
 

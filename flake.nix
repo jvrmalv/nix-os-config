@@ -13,7 +13,7 @@
   outputs = { self, nixpkgs, home-manager, ... }@attrs:
     {
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.nix-osvm = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = attrs;
         modules = [
