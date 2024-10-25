@@ -212,8 +212,7 @@ in
     settings = {
       trusted-users = [ "root" "shidou" ];
       auto-optimise-store = true;
-      substituters = [
-        "https://nix-gaming.cachix.org"
+      substituters = [ "https://nix-gaming.cachix.org"
         "https://nixpkgs.cachix.org"
       ];
       trusted-public-keys = [
@@ -241,17 +240,18 @@ in
 
   #modules.shell.zsh.rcFiles = [ "${configDir}/emacs/aliases.zsh" ];
 
-  fonts.packages = [ pkgs.emacs-all-the-icons-fonts ];
+  services.postgresql.enable = true;
 
-  system.userActivationScripts = {
-    installDoomEmacs = {
-      text = ''
-        if [ ! -d "/home/shidou/.emacs.d" ]; then
-           ${pkgs.git}/bin/git clone --depth=1 --single-branch "https://github.com/doomemacs/doomemacs" "/home/shidou/.emacs.d"
-        fi
-        EMACS="${emacs-pkg}/bin/emacs" PATH="${pkgs.git}/bin:${pkgs.bash}/bin:$PATH" /home/shidou/.emacs.d/bin/doom sync
-      '';
-    };
-  };
+ fonts.packages = [ pkgs.emacs-all-the-icons-fonts ];
+ #system.userActivationScripts = {
+ #  installDoomEmacs = {
+ #    text = ''
+ #      if [ ! -d "/home/shidou/.emacs.d" ]; then
+ #         ${pkgs.git}/bin/git clone --depth=1 --single-branch "https://github.com/doomemacs/doomemacs" "/home/shidou/.emacs.d"
+ #      fi
+ #      EMACS="${emacs-pkg}/bin/emacs" PATH="${pkgs.git}/bin:${pkgs.bash}/bin:$PATH" /home/shidou/.emacs.d/bin/doom sync
+ #    '';
+ #  };
+ #};
   # FIM DA MACUMBA DO EMACS
 }

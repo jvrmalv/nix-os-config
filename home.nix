@@ -5,15 +5,14 @@ in
 {
   home.username = "shidou";
   home.homeDirectory = "/home/shidou";
-  home.packages = [ pkgs.xfce.thunar];
+  home.packages = [ pkgs.xfce.thunar pkgs.devenv];
   home.sessionVariables.EDITOR = "nvim";
 
   programs.bash = {
     enable = true;
     bashrcExtra = '' 
     eval "$(direnv hook bash)"
-    ''; 
-  };
+    ''; };
 
   programs.git = {
     enable = true;
@@ -23,7 +22,9 @@ in
 
   programs.neovim = {
     plugins = [
-    pkgs.vimPlugins.nvim-treesitter
+    {
+    plugin = pkgs.vimPlugins.nvim-treesitter;
+    }
     pkgs.vimPlugins.nvim-treesitter-parsers.nix
     pkgs.vimPlugins.nvim-treesitter-parsers.bash
     pkgs.vimPlugins.nvim-treesitter-parsers.json
@@ -74,18 +75,31 @@ in
         "${mod}+Shift+k" = "move up";
         "${mod}+Shift+l" = "move right";
 
-	# Split Conatainer
-	"${mod}+Shift+g" = "split horizontal";
-	"${mod}+Shift+v" = "split vertical";
+	      # Split Conatainer
+	      "${mod}+Shift+g" = "split horizontal";
+	      "${mod}+Shift+v" = "split vertical";
 
         # My multi monitor setup
         # "${mod}+m" = "move workspace to output {MONITOR NAME}";
         # "${mod}+Shift+m" = "move workspace to output {MONITOR NAME}"; };
       };
+      modes = lib.mkOptionDefault {
+        resize = {
+          j= "resize grow height 10 px or 10 ppt"; Escape = "mode default";
+          h= "resize shrink width 10 px or 10 ppt";
+          Esc= "mode default";
+          l= "resize grow width 10 px or 10 ppt";
+          k= "resize shrink height 10 px or 10 ppt";
+          };
+        };
+      };
     };
-  };
 
   programs.direnv = {
-    enable = true; enableBashIntegration = true; nix-direnv.enable = true; }; home.stateVersion = "23.05";
+    enable = true; enableBashIntegration = true; nix-direnv.enable = true; 
+  }; 
+
+  home.stateVersion = "23.05";
 }
+
 

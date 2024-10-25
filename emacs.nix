@@ -56,14 +56,14 @@ in
 
   fonts.packages = [ pkgs.emacs-all-the-icons-fonts pkgs.nerdfonts ];
 
-  system.userActivationScripts = {
-    installDoomEmacs = {
-      text = ''
-        if [ ! -d "/home/shidou/.emacs.d" ]; then
-           ${pkgs.git}/bin/git clone --depth=1 --single-branch "https://github.com/doomemacs/doomemacs" "/home/shidou/.emacs.d"
-        fi
-        EMACS="${emacs-pkg}/bin/emacs" PATH="${pkgs.git}/bin:${pkgs.bash}/bin:$PATH" /home/shidou/.emacs.d/bin/doom sync
-      '';
-    };
-  };
+ #system.userActivationScripts = {
+ #  installDoomEmacs = {
+ #    text = ''
+ #      if [ ! -d "/home/shidou/.emacs.d" ]; then
+ #         ${pkgs.git}/bin/git clone --depth=1 --single-branch "https://github.com/doomemacs/doomemacs" "/home/shidou/.emacs.d"
+ #      fi
+ #      EMACS="${emacs-pkg}/bin/emacs" PATH="${pkgs.git}/bin:${pkgs.bash}/bin:$PATH" /home/shidou/.emacs.d/bin/doom sync
+ #    '';
+ #  };
+ #};
 }
