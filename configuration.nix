@@ -1,7 +1,6 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... } @inputs :
 let
   emacs-pkg = ((pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages (epkgs: [ epkgs.vterm ]));
@@ -24,6 +23,7 @@ in
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -72,7 +72,6 @@ in
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -93,13 +92,13 @@ in
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.shidou = {
+    shell = pkgs.zsh;
     isNormalUser = true;
     description = "Shidou";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
       kate
-      vim
       google-chrome
       #  thunderbird
     ];
@@ -119,6 +118,12 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nixd
+    nodejs
+    elixir
+    elixir-ls
+    dbeaver-bin
+    insomnia
     ranger
     ## Emacs itself
     binutils # native-comp needs 'as', provided by this
@@ -153,6 +158,8 @@ in
     #  wget
   ];
 
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -183,6 +190,16 @@ in
   # Enable Git
   programs.git.enable = true;
 
+  programs.zsh = {
+    enable = true;
+    shellAliases = {
+    config = "sudo nvim /etc/nixos/configuration.nix";
+    home = "nvim /home/shidou/flake/home.nix";
+    nb = "sudo nixos-rebuild build";
+    nt = "sudo nixos-rebuild test";
+    ns = "sudo nixos-rebuild switch";
+    };
+  };
   # Set aliases for bash shell
   programs.bash.shellAliases = {
     config = "sudo nvim /etc/nixos/configuration.nix";

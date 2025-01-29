@@ -14,10 +14,24 @@ in
     eval "$(direnv hook bash)"
     ''; };
 
+  programs.zsh = {
+    enable = true;
+    oh-my-zsh = {
+      enable = true;
+      theme = "half-life"; 
+      plugins = [ "git" "docker" "kubectl" "vi-mode"];
+    };
+  };
+
   programs.git = {
     enable = true;
     userEmail = "jvrmalv@gmail.com";
     userName = "Joao Vitor";
+  };
+
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscode.fhs;
   };
 
   programs.neovim = {
@@ -30,11 +44,36 @@ in
     pkgs.vimPlugins.nvim-treesitter-parsers.json
     pkgs.vimPlugins.nvim-treesitter-parsers.vim
     pkgs.vimPlugins.nvim-treesitter-parsers.lua
+    pkgs.vimPlugins.nvim-lspconfig
     ];
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    extraLuaConfig = ''
+      local nvim_lsp = require("lspconfig")
+      nvim_lsp.nixd.setup({
+         cmd = { "nixd" },
+         settings = {
+            nixd = {
+               nixpkgs = {
+                  expr = "import <nixpkgs> { }",
+               },
+               formatting = {
+                  command = { "nixfmt" },
+               },
+               options = {
+                  nixos = {
+                     expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.k-on.options',
+                  },
+                  home_manager = {
+                     expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
+                  },
+               },
+            },
+         },
+      })
+    '';
     extraConfig = ''
       filetype plugin indent on
       set autoindent
@@ -44,6 +83,19 @@ in
       set expandtab
       set number
     '';
+    coc = {
+      enable = true;
+      settings = ''
+        {
+          "languageserver": {
+            "nix": {
+              "command": "nixd",
+              "filetypes": ["nix"]
+            }
+          }
+        }
+      '';
+    };
   };
 
   programs.alacritty = {
@@ -69,7 +121,7 @@ in
         "${mod}+k" = "focus up";
         "${mod}+l" = "focus right";
 
-        # Move
+        # Movl
         "${mod}+Shift+h" = "move left";
         "${mod}+Shift+j" = "move down";
         "${mod}+Shift+k" = "move up";
